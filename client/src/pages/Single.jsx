@@ -2,71 +2,127 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
-import Menu from "../Components/Menu";
+import Menu from "../components/Menu";
+import axios from "axios";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 export default class Single extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: [],
+    };
+  }
+
+  //as useEffect in functional component
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  async fetchData() {
+    const postId = window.location.pathname.split("/")[2];
+    console.log("postId", postId);
+
+    try {
+      const res = await axios.get(`http://localhost:3000/api/posts/${postId}`);
+      console.log("response", res);
+      console.log(res.data);
+      this.setState({ post: res.data });
+    } catch (err) {}
+  }
+
   render() {
+    const getText = (text) => {
+      const doc = new DOMParser().parseFromString(text, "text/html");
+      return doc.body.textContent;
+    };
+
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    console.log("currentUser", currentUser);
+
     return (
       <div className="single">
         <div className="content">
-          <img src="https://source.unsplash.com/random" alt="image"></img>
+          <img src={`../upload/${this.state.post.img}`} alt="image"></img>
           <div className="user">
-            <img src="https://source.unsplash.com/random" alt="image"></img>
+            <img src={this.state.post.userImg} alt="image"></img>
             <div className="info">
-              <span>John</span>
-              <p>Posted 2 days ago</p>
+              <span>{this.state.post.username}</span>
+              <p>Posted {moment(this.state.post.date).fromNow()}</p>
             </div>
-            <div className="edit">
-              <Link to="/write?edit=2">
-                <img src={Edit} alt="Edit"></img>
-              </Link>
-              <img src={Delete} alt="Delete"></img>
-            </div>
+            {currentUser &&
+              currentUser.username === this.state.post.username && (
+                <EditPart post={this.state.post} />
+              )}
           </div>
-          <h1 className="title">Lorem ipsum dolor sit amet.</h1>
-          <p>
-            lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            volutpat, nulla tempor vestibulum facilisis, nunc lorem accumsan
-            lorem, ut congue tortor nibh ut enim. In vel vehicula ante.
-            Curabitur eget ultricies magna, id posuere dolor. Suspendisse ut
-            ligula vitae lorem iaculis molestie. Suspendisse molestie lacus eget
-            tincidunt sodales. Nunc sed eleifend dui, sed condimentum nibh.
-            Suspendisse at ipsum malesuada velit ultrices ultricies in in nulla.
-            Etiam ut malesuada purus. Fusce pharetra dui ut ullamcorper dictum.
-            Aliquam erat volutpat. Sed eu efficitur augue. lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Aenean volutpat, nulla tempor
-            vestibulum facilisis, nunc lorem accumsan lorem, ut congue tortor
-            nibh ut enim. In vel vehicula ante. Curabitur eget ultricies magna,
-            id posuere dolor.
-            <br />
-            <br />
-            Suspendisse ut ligula vitae lorem iaculis molestie. Suspendisse
-            molestie lacus eget tincidunt sodales. Nunc sed eleifend dui, sed
-            condimentum nibh. Suspendisse at ipsum malesuada velit ultrices
-            ultricies in in nulla. Etiam ut malesuada purus. Fusce pharetra dui
-            ut ullamcorper dictum. Aliquam erat volutpat. Sed eu efficitur
-            augue. lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Aenean volutpat, nulla tempor vestibulum facilisis, nunc lorem
-            accumsan lorem, ut congue tortor nibh ut enim. In vel vehicula ante.
-            Curabitur eget ultricies magna, id posuere dolor. Suspendisse ut
-            ligula vitae lorem iaculis molestie. Suspendisse molestie lacus eget
-            tincidunt sodales. Nunc sed eleifend dui, sed condimentum nibh.
-            Suspendisse at ipsum malesuada velit ultrices ultricies in in nulla.
-            Etiam ut malesuada purus. Fusce pharetra dui ut ullamcorper dictum.
-            Aliquam erat volutpat. Sed eu efficitur augue. lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Aenean volutpat, nulla tempor
-            vestibulum facilisis, nunc lorem accumsan lorem, ut congue tortor
-            nibh ut enim. In vel vehicula ante. Curabitur eget ultricies magna,
-            id posuere dolor. Suspendisse ut ligula vitae lorem iaculis
-            molestie. Suspendisse molestie lacus eget tincidunt sodales. Nunc
-            sed eleifend dui, sed condimentum nibh. Suspendisse at ipsum
-            malesuada velit ultrices ultricies in in nulla. Etiam ut malesuada
-            purus. Fusce pharetra dui ut ullamcorper dictum. Aliquam erat
-            volutpat. Sed eu efficitur augue.
-          </p>
+          <h1 className="title">
+            {this.state.post ? this.state.post.title : null}
+          </h1>
+          {getText(this.state.post.description)}
         </div>
-        <Menu />
+        <Menu cat={this.state.post.cat} />
       </div>
     );
   }
 }
+
+function EditPart({ post }) {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    localStorage.setItem("edit", JSON.stringify(post));
+  };
+
+  const handleDelete = async () => {
+    const postId = window.location.pathname.split("/")[2];
+    console.log("postId", postId);
+
+    try {
+      await axios.delete(`http://localhost:3000/api/posts/${postId}`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div className="edit">
+      <Link to="/write?edit=2" state={post}>
+        <img src={Edit} onClick={handleEdit} alt="Edit"></img>
+      </Link>
+      <img src={Delete} onClick={handleDelete} alt="Delete"></img>
+    </div>
+  );
+}
+
+// function EditPart() {
+//   const navigate = useNavigate();
+
+//   const handleEdit = () => {
+//     localStorage.setItem("edit", JSON.stringify(this.state.post));
+//   };
+
+//   const handleDelete = async () => {
+//     const postId = window.location.pathname.split("/")[2];
+//     console.log("postId", postId);
+
+//     try {
+//       const res = await axios.delete(
+//         `http://localhost:3000/api/posts/${postId}`
+//       );
+//       navigate("/");
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+
+//   return (
+//     <div className="edit">
+//       <Link to="/write?edit=2" state={this.state.post}>
+//         <img src={Edit} onClick={handleEdit} alt="Edit"></img>
+//       </Link>
+//       <img src={Delete} onClick={handleDelete} alt="Delete"></img>
+//     </div>
+//   );
+// }

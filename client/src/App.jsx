@@ -6,8 +6,9 @@ import Single from "./pages/Single";
 import Write from "./pages/Write";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Footer from "./Components/Footer";
-import Navbar from "./Components/Navbar";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 import "./style.scss";
 
 // Use nested routes to render the Header and Footer components in the Layout component.
