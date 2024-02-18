@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
+import Menu from "../Components/Menu";
 
 export default class Single extends Component {
   render() {
@@ -64,7 +65,7 @@ export default class Single extends Component {
             volutpat. Sed eu efficitur augue.
           </p>
         </div>
-        <div className="menu">menu</div>
+        <Menu />
       </div>
     );
   }
