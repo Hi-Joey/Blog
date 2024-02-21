@@ -79,7 +79,7 @@ export default class Home extends Component {
               </div>
               <div className="content">
                 <Link
-                  //onClick={this.fetchData}
+                  // onClick={this.fetchData}
                   className="link"
                   to={`post/${post.id}`}
                 >

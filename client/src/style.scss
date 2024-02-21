@@ -1,4 +1,5 @@
-$lightGreen: #b9e7e7;
+$light: #ffcad4;
+$dark: #ff407d;
 
 .app {
   display: flex;
@@ -18,11 +19,11 @@ $lightGreen: #b9e7e7;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: $lightGreen;
+      background-color: $light;
       h1 {
         font-size: 20px;
         margin-bottom: 20px;
-        color: teal;
+        color: $dark;
       }
 
       form {
@@ -38,13 +39,13 @@ $lightGreen: #b9e7e7;
         input {
           padding: 10px;
           border: none;
-          border-bottom: 1px solid teal;
+          border-bottom: 1px solid $dark;
         }
 
         button {
           padding: 10px;
           border: none;
-          background-color: teal;
+          background-color: $dark;
           cursor: pointer; //change cursor to pointer
           color: white;
         }
@@ -89,7 +90,7 @@ $lightGreen: #b9e7e7;
         }
 
         .write {
-          background-color: $lightGreen;
+          background-color: $light;
 
           //circle style
           width: 50px;
@@ -107,15 +108,15 @@ $lightGreen: #b9e7e7;
           //hover effect
           &:hover {
             background-color: white;
-            color: teal;
-            border: 1px solid teal;
+            color: $dark;
+            border: 1px solid $dark;
           }
         }
       }
     }
 
     footer {
-      background-color: $lightGreen;
+      background-color: $light;
       margin-top: 100px;
       padding: 20px;
       display: flex;
@@ -156,7 +157,7 @@ $lightGreen: #b9e7e7;
               left: -20px;
               z-index: -1;
 
-              background-color: $lightGreen;
+              background-color: $light;
             }
 
             img {
@@ -184,13 +185,13 @@ $lightGreen: #b9e7e7;
               width: max-content;
               padding: 10px 20px;
               background-color: white;
-              border: 1px solid teal;
-              color: teal;
+              border: 1px solid $dark;
+              color: $dark;
               cursor: pointer;
 
               &:hover {
                 border: 1px solid white;
-                background-color: $lightGreen;
+                background-color: $light;
                 color: black;
               }
             }
@@ -284,13 +285,13 @@ $lightGreen: #b9e7e7;
             width: max-content;
             padding: 7.5px 15px;
             background-color: white;
-            border: 1px solid teal;
-            color: teal;
+            border: 1px solid $dark;
+            color: $dark;
             cursor: pointer;
 
             &:hover {
               border: 1px solid white;
-              background-color: $lightGreen;
+              background-color: $light;
               color: black;
             }
           }
@@ -360,16 +361,16 @@ $lightGreen: #b9e7e7;
 
             :first-child {
               background-color: white;
-              color: teal;
-              border: 1px solid teal;
+              color: $dark;
+              border: 1px solid $dark;
               cursor: pointer;
               padding: 3px 5px;
             }
 
             :last-child {
-              background-color: teal;
+              background-color: $dark;
               color: white;
-              border: 1px solid teal;
+              border: 1px solid $dark;
               cursor: pointer;
               padding: 3px 5px;
             }
@@ -378,7 +379,7 @@ $lightGreen: #b9e7e7;
           .cat {
             display: flex;
             align-items: center;
-            color: teal;
+            color: $dark;
             gap: 2px;
           }
         }
